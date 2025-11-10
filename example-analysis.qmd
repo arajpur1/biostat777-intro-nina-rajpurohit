@@ -4,6 +4,8 @@ format:
   html:
     toc: true
     code-fold: true
+execute:
+  warning: false
 bibliography: references.bib
 
 ---
@@ -166,7 +168,7 @@ ggplot(data = winners_only, mapping = aes(x = episode, y = technical)) +
         axis.text.y = element_text(size = 10, hjust = 1),
         axis.text.x = element_blank(),
         axis.title.x = element_text(size = 10, hjust = 0),
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         strip.background = element_blank(),
         strip.text = element_text(size = 8, hjust = 0, face = "bold"),
         panel.grid = element_blank(),   
@@ -182,11 +184,11 @@ ggplot(data = winners_only, mapping = aes(x = episode, y = technical)) +
 
 Knowing that the winner doesn't necessarily finish on top in this challenge every episode, we want to look at how other contestants, grouped by their series, do in the challenge as well.
 
-This plot is animated to show each contestants trajectory.  While the series winner doesn't always rank first, a last-place ranking often means the end of the journey, and elimination that week, for a contestant.
+This plot is animated to show each contestant's trajectory, with a dot marking the "endpoint" of their time on the show.  While the series winner doesn't always rank first, a last-place ranking often means the end of the journey, and elimination that week, for a contestant.
 
 
 ::: {.column-margin}
-In Series 1 - Episode 1, BBC did not air the judges' discussion of all the Technical Challenge rankings; viewers only learned the top 3 and bottom 3. For the Series 1 contestants that fell in the middle, our graph starts with their ranking in Episode 2.
+In Series 1 - Episode 1, BBC did not air the judges' discussion of all the Technical Challenge rankings; viewers only learned the top 3 and bottom 3 contestants. For the Series 1 contestants that fell in the middle, our graph starts with their ranking for Episode 2.
 :::
 
 ```{r graph2-graph, warning = FALSE}
@@ -207,7 +209,7 @@ ggplot(tech_results, aes(x = episode, y = technical, group = baker_unique, color
   facet_wrap(~series, scales = "free_x") +
   labs(
     title = "Technical challenge rankings for all contestants, by series",
-    subtitle = "Though it is one of 3 challenges, a last place finish in the Technical Challenge often means\n elimination that week",
+    subtitle = "A last place finish in the Technical Challenge often means elimination that week",
     caption  = "Data Source: {bakeoff} package",
     x = "Episodes →",
     y = "Technical Challenge Ranking"
