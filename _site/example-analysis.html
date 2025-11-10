@@ -536,8 +536,8 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
  ctype    en_US.UTF-8
  tz       America/New_York
  date     2025-11-09
- pandoc   3.6.3 @ /private/var/folders/qm/h7634zjs1wjd_r40rlk3jwgc0000gn/T/AppTranslocation/9B28C772-9CB9-4F6D-BB6E-616341CEED76/d/Positron.app/Contents/Resources/app/quarto/bin/tools/x86_64/ (via rmarkdown)
- quarto   1.8.25 @ /Applications/quarto/bin/quarto
+ pandoc   3.6.3 @ /Applications/quarto/bin/tools/ (via rmarkdown)
+ quarto   1.8.25 @ /usr/local/bin/quarto
 
 ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
  package      * version    date (UTC) lib source
@@ -689,7 +689,7 @@ The Great British Bake Off. 2025. <span>“The Great British Bake Off — <span>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/arajpur1\.github\.io\/biostat777-intro-nina-rajpurohit\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -2,4 +2,10 @@
 title: "About"
 ---
 
-About this site
+Nina is a PhD student at Johns Hopkins School of Medicine. Her research uses genomics and transcriptomics methodologies to better understand human brain development and disease, with a focus on psychiatric disorders.
+
+She did her undergraduate work in Biological Sciences, with concentrations in genetics and computational biology, at Cornell University. Her research experience includes work in psychiatric genomics at the Lieber Institute for Brain Development; neurogenetics with Craig Hunter at Harvard University; and population genetics with Andrew Clark at Cornell University.
+
+Nina is also interested in teaching and science communication, and she helps run several outreach programs that aim to make STEM fields more accessible.
+
+Outside of lab, Nina enjoys baking, hiking, and being godparent to several adorable cats.
