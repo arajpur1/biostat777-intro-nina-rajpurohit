@@ -1,0 +1,6 @@
+---
+title: "Home"
+---
+![](images/Nina-e1495416407943-515x656.jpg){width="30%" fig-align="center"}
+
+Nina is a PhD student at Johns Hopkins School of Medicine using genomics and transcriptomics methodologies to better understand human brain development and disease. 

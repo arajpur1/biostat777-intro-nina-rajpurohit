@@ -1,0 +1,245 @@
+---
+title: "Example Analysis: The Great British Bake Off"
+format: 
+  html:
+    toc: true
+    code-fold: true
+bibliography: references.bib
+
+---
+![Image Source: BBC](images/The_Great_British_Bake_Off_title.jpg)
+
+
+# Background and Question of Interest
+
+The Great British Bake Off is a multi-week amateur baking competition/show that first aired in 2010. For those unfamiliar with the show's setup, Wikipedia summarizes it well [@wiki:TheGreatBritishBakeOff]:
+
+"A group of amateur bakers compete against each other in a series of rounds, attempting to impress two judges with their baking skills. One contestant is eliminated in each round, and the winner is selected from the three contestants who reach the final. In each episode, the amateur bakers are given three challenges based on that week's theme: a signature bake, a technical challenge, and a show-stopper:
+
+**Signature Challenge**  
+This challenge is for the amateur bakers to show off their tried-and-tested recipes for bakes they might make for their friends and family.  
+**Technical Challenge**  
+This challenge requires enough technical knowledge and experience to produce a certain finished product when given only limited – or even minimal – instructions. The bakers are all given the same recipe and are not told beforehand what the challenge will be. The finished products are judged blind and ranked from worst to best. They place their bakes behind the person's photo.  
+**Showstopper Challenge**  
+This challenge is for the bakers to show off their skills and talent. The judges favour a bake that has a professional appearance but is also outstanding in flavours."
+
+
+As we watch the season (or series, as the British say) unfold, it's fun to try to predict how contestants will do each week -- will your favorite be eliminated, be safe until next week, or maybe even be recognized as Star Baker for the week?
+
+As far as the audience knows, the judges don't have a formal weighting of the three challenges when they choose who will be eliminated, but viewers have noticed that the Technical Challenge seems to be significant in determining how a baker will do.
+
+Here, we explore the question of how Techinical Challenge results relate to bakers' overall outcomes on the show. Our intended audience is fans of the show and those who enjoy digging deeper into light-hearted datasets.
+
+::: {.callout-note title="Aim of our analysis"}
+This analysis looks at data from 10 seasons of the Great British Bake Off and aims to answer the question of what role the Technical Challenge plays in contestants' overall success on the show.
+:::
+
+
+# Data Source and Description
+
+The data we will use comes from the R package {bakeoff}, created "to enable data wrangling, analysis, and visualizations with R using data from “The Great British Bake Off” [@bakeoff]. This package was featured in the Tidy Tuesday series from the Data Science Learning community on October 25, 2022 [@tidytuesday].
+
+The dataset contains data from Series 1-10 of the Great British Bake Off in 3 dataframes, `bakers`, `challenges`, and `episodes`. A data dictionary can be found via [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday/tree/main/data/2022/2022-10-25). 
+
+
+# Analysis
+
+```{r setup, message=FALSE}
+#remotes::install_github("apreshill/bakeoff")
+library("bakeoff")
+library("dplyr")
+library("ggplot2")
+#library("plotly")
+library("stringr")
+library("tidyverse")
+library("gganimate")
+library("ggbump")
+```
+
+We'll be focusing only on two of the dataframes, `bakers` and `challenges`, which can can `glimpse` below:
+
+```{r look-at-data}
+#View(bakers)
+#View(challenges)
+#View(episodes)
+
+glimpse(bakers)
+glimpse(challenges)
+#glimpse(episodes)
+```
+
+
+# Q1: How does Technical Challenge ranking relate to overall outcome?
+
+Viewers have the sense that performance in the Technical Challenge correlates with overall contestant outcome. To check this intuition, we look at Technical Challenge outcomes for all contestants across the 10 seasons, and we see that Technical Challenge outcomes are indeed positively correlated with overall outcome.
+
+```{r, warning = FALSE}
+#remove contestant for all episodes after they have been eliminated
+challenges_filtered <- challenges %>% 
+  drop_na(technical, result)
+
+# Rename result labels for broader understandability
+challenges_filtered <- challenges_filtered %>%
+  mutate(outcome_broad = case_when(
+    result == "STAR BAKER" ~ "Star Baker",
+    result == "OUT"        ~ "Eliminated",
+    result == "IN"         ~ "Safe",
+    result == "WINNER"     ~ "Winner",
+   # result == "RUNNER-UP"  ~ "Runner-Up",
+    TRUE                   ~ NA_character_
+  )) %>%
+  filter(!is.na(outcome_broad))
+
+
+# How does technical ranking relate to outcome category?
+ggplot(challenges_filtered, aes(x = outcome_broad, y = technical)) +
+  geom_boxplot(fill = "steelblue") +
+  scale_y_reverse(breaks = c(1, 3, 6, 9, 13),
+                  labels = c("1st", "3rd", "6th", "9th", "13th")) +
+  coord_cartesian(clip = "off", expand = FALSE) +
+  labs(
+    title = "Success in the Technical Challenge is correlated with better outcomes",
+    subtitle = "Across all series and contestants, strong technical bakers have better overall outcomes",
+    caption  = "Data Source: {bakeoff} package",
+    x = "Episode Outcome",
+    y = "Technical Challenge Ranking"
+  ) +
+  theme_minimal()
+```
+
+
+# Q2: How do winners perform in Technical Challenges throughout their series?
+
+To better understand how the most successful contestants perform in the Technical Challenge, we can look each the performance of each series' winner across all episodes of their series, looking at both their Technical Challenge ranking and any Star Baker recognition. We see that winners tend to do well in this challenge, generally ranking 5th or better, but they have ups and downs.
+
+::: {.callout-note title="A note about Star Baker"}
+It's important to note that Star Baker is a subjective award from the judges that takes into account performance across all three challenges. Technical Challenge ranking contributes to their decision, but the exact criteria may vary with week or series.
+:::
+
+::: {.callout-warning title="Episode counts vary"}
+Series 1 had six episodes, and Series 2 had eight episodes. All other series had 10 episodes.
+:::
+
+```{r graph2, warning = FALSE}
+#how has the winner done in technical challenges over the series?
+
+# filter for winners, join dfs bakers and challenges
+winners_only <- bakers %>%
+  filter(series_winner == 1) %>%
+  left_join(episodes, by = "series") %>%
+  mutate(star_baker = str_detect(baker, sb_name),
+         star_baker = ifelse(is.na(star_baker), FALSE, star_baker),
+         baker_label = paste(baker, "/ Series:", series)) %>%
+  select(series, episode, baker, baker_label, star_baker) %>%
+  left_join(challenges, by = c("baker", "series", "episode"))
+
+
+ggplot(data = winners_only, mapping = aes(x = episode, y = technical)) +                   
+  #geom_line(size = 0.5, alpha = 0.8, color = "steelblue") +
+  geom_point(data = winners_only %>% filter(!star_baker),
+             size = 0.8,
+             color = "steelblue") + 
+  geom_bump(size = 0.5, alpha = 0.8, color = "steelblue") +
+
+  geom_point(data = winners_only %>% filter(star_baker),
+             mapping = aes(shape = star_baker),
+             size = 2,
+             color = "steelblue") +
+
+  scale_y_reverse(breaks = c(1, 3, 6, 9, 13),
+                  labels = c("1st", "3rd", "6th", "9th", "13th")) +
+  scale_x_continuous(breaks = seq(1, 10, 1)) +
+  scale_shape_manual(values = 8, limits = c(TRUE), labels = c("Star Baker")) +
+  guides(shape = "none") +
+  facet_wrap(~ reorder(baker_label, series),
+             scale = "free_x",
+             nrow = 2) +
+  #coord_cartesian(clip = "off", expand = FALSE) +
+  labs(title = "The winner's path isn't always smooth",
+       subtitle = "Though series winners tend to do well in the Technical Challenge overall,\n they don't necessarily dominate the challenge (* indicates contestant won Star Baker that week)",
+       caption  = "Data Source: {bakeoff} package",
+       x = "Episodes →",
+       y = "Technical Challenge Ranking") +
+  theme_bw() +
+  theme(axis.line.y = element_blank(), 
+        axis.line.x = element_line(color = "black", size = 0.5),
+        axis.text.y = element_text(size = 10, hjust = 1),
+        axis.text.x = element_blank(),
+        axis.title.x = element_text(size = 10, hjust = 0),
+        axis.title.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 8, hjust = 0, face = "bold"),
+        panel.grid = element_blank(),   
+        plot.margin = margin(10, 10, 10, 10)
+)
+  
+
+```
+
+
+
+# Q3: How does each contestant do in the Technical Challenge across their series?
+
+Knowing that the winner doesn't necessarily finish on top in this challenge every episode, we want to look at how other contestants, grouped by their series, do in the challenge as well.
+
+This plot is animated to show each contestants trajectory.  While the series winner doesn't always rank first, a last-place ranking often means the end of the journey, and elimination that week, for a contestant.
+
+
+::: {.column-margin}
+In Series 1 - Episode 1, BBC did not air the judges' discussion of all the Technical Challenge rankings; viewers only learned the top 3 and bottom 3. For the Series 1 contestants that fell in the middle, our graph starts with their ranking in Episode 2.
+:::
+
+```{r graph2-graph, warning = FALSE}
+
+# account for bakers with same first name across multiple series
+tech_results <- challenges_filtered %>%
+  mutate(
+    baker = fct_reorder(baker, series),
+    baker_unique = paste(baker,series)
+  )
+
+ggplot(tech_results, aes(x = episode, y = technical, group = baker_unique, color=series)) +
+  geom_line(alpha = 0.6) +
+  geom_point() +
+  scale_y_reverse(breaks = c(1, 3, 6, 9, 13),
+                  labels = c("1st", "3rd", "6th", "9th", "13th")) +
+  scale_x_continuous(breaks = seq(1, 10, 1)) +
+  facet_wrap(~series, scales = "free_x") +
+  labs(
+    title = "Technical challenge rankings for all contestants, by series",
+    subtitle = "Though it is one of 3 challenges, a last place finish in the Technical Challenge often means\n elimination that week",
+    caption  = "Data Source: {bakeoff} package",
+    x = "Episodes →",
+    y = "Technical Challenge Ranking"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 10, hjust = 0)) +
+  transition_reveal(along=episode)
+```
+
+# Summary
+
+Here, we have used data from Series 1-10 of The Great British Bake Off to explore the question of how performance in the Technical Challenge relates to overall performance on the show. While this is only one of three baking challenges on the show, we see that it positively correlates with contestant outcomes. Winners of each series tend to do well throughout the series in this Challenge, though they don't rank first every week. On the other end of the rankings, a poor showing in this Challenge is often followed by elimination that week.
+
+A deeper analysis might explore the other two baking challenges as well. Their outcomes were not well documented in this dataset, but the information could be useful in understanding baker performance more holistically. Overall, Technical Challenge rankings appear to play an important role in Bake Off results, but the relationship has just enough unpredictability to keep viewers guessing.
+
+
+# Functions used
+
+**dplyr**: `filter()`, `mutate()`, `select()`, `left_join()`  
+**tidyr**: `drop_na()`  
+**forcats:** `fct_reorder()`  
+**stringr:** `str_detect()`  
+**ggplot2**: `geom_boxplot()`, `geom_line()`, `geom_point()`, `facet_wrap()`  
+**ggbump** `geom_bump()`
+
+
+
+
+
+
+
+```{r}
+options(width = 120)
+sessioninfo::session_info()
+```
