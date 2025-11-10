@@ -1,7 +1,7 @@
 # Biostat 777, Project 1
 
 ## About
-Author: Nina Rajpurohit
+Author: Nina Rajpurohit  
 Website: https://arajpur1.github.io/biostat777-intro-nina-rajpurohit
 
 ## Data
