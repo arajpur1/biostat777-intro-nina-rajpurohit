@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Example Analysis: The Great British Bake Off – Part1_website</title>
+<title>Example Analysis: The Great British Bake Off – Nina Rajpurohit</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -138,7 +138,7 @@ div.csl-indent {
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Part1_website</span>
+    <span class="navbar-title">Nina Rajpurohit</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -445,7 +445,7 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
 <span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
 <span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="co">#axis.title.y = element_blank(),</span></span>
 <span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),   </span>
@@ -464,10 +464,10 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
 <section id="q3-how-does-each-contestant-do-in-the-technical-challenge-across-their-series" class="level1 page-columns page-full">
 <h1>Q3: How does each contestant do in the Technical Challenge across their series?</h1>
 <p>Knowing that the winner doesn’t necessarily finish on top in this challenge every episode, we want to look at how other contestants, grouped by their series, do in the challenge as well.</p>
-<p>This plot is animated to show each contestants trajectory. While the series winner doesn’t always rank first, a last-place ranking often means the end of the journey, and elimination that week, for a contestant.</p>
+<p>This plot is animated to show each contestant’s trajectory, with a dot marking the “endpoint” of their time on the show. While the series winner doesn’t always rank first, a last-place ranking often means the end of the journey, and elimination that week, for a contestant.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>In Series 1 - Episode 1, BBC did not air the judges’ discussion of all the Technical Challenge rankings; viewers only learned the top 3 and bottom 3. For the Series 1 contestants that fell in the middle, our graph starts with their ranking in Episode 2.</p>
+<p>In Series 1 - Episode 1, BBC did not air the judges’ discussion of all the Technical Challenge rankings; viewers only learned the top 3 and bottom 3 contestants. For the Series 1 contestants that fell in the middle, our graph starts with their ranking for Episode 2.</p>
 </div></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -487,7 +487,7 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>series, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Technical challenge rankings for all contestants, by series"</span>,</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Though it is one of 3 challenges, a last place finish in the Technical Challenge often means</span><span class="sc">\n</span><span class="st"> elimination that week"</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"A last place finish in the Technical Challenge often means elimination that week"</span>,</span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Data Source: {bakeoff} package"</span>,</span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Episodes →"</span>,</span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Technical Challenge Ranking"</span></span>
@@ -496,48 +496,6 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>, <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_reveal</span>(<span class="at">along=</span>episode)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?
-`geom_line()`: Each group consists of only one observation.
-ℹ Do you need to adjust the group aesthetic?</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -563,8 +521,8 @@ $ showstopper &lt;chr&gt; "Red, White &amp; Blue Chocolate Cake with Cigarellos,
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">120</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">120</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
